@@ -132,6 +132,81 @@
   margin-top: 2px;
 }
 
+/* ── Leaderboard ── */
+.leaderboard-card {
+  background: var(--color-panel-2);
+  padding: var(--space-5);
+}
+
+.leaderboard-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--space-2);
+}
+
+.leaderboard-icon {
+  font-size: 1.5rem;
+}
+
+.leaderboard-title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  letter-spacing: 0.04em;
+}
+
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--color-bg);
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 2px 2px 0 #000;
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+.leaderboard-rank {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid #000;
+  font-size: var(--text-xs);
+  flex-shrink: 0;
+}
+
+.leaderboard-name {
+  flex: 1;
+  font-size: var(--text-sm);
+}
+
+.leaderboard-time {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.leaderboard-note {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-align: right;
+  font-style: italic;
+}
+
 /* ── Form ── */
 .absensi-form {
   background: var(--color-white);

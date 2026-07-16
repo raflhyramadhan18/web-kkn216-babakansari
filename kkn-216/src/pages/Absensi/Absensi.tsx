@@ -281,6 +281,33 @@ const Absensi: React.FC = () => {
                 </div>
               </motion.div>
             )}
+
+            {/* Leaderboard Absensi (Si Paling Pagi) */}
+            <motion.div className="leaderboard-card comic-card"
+              initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35, duration: 0.5 }}>
+              <div className="leaderboard-header">
+                <span className="leaderboard-icon">🏆</span>
+                <h3 className="leaderboard-title">Top 3 Si Paling Pagi</h3>
+              </div>
+              <ul className="leaderboard-list">
+                <li className="leaderboard-item">
+                  <span className="leaderboard-rank" style={{ background: '#FFD700', color: '#000' }}>1</span>
+                  <span className="leaderboard-name">Ahmad Fauzi</span>
+                  <span className="leaderboard-time">07:00</span>
+                </li>
+                <li className="leaderboard-item">
+                  <span className="leaderboard-rank" style={{ background: '#C0C0C0', color: '#000' }}>2</span>
+                  <span className="leaderboard-name">Mutiara</span>
+                  <span className="leaderboard-time">07:01</span>
+                </li>
+                <li className="leaderboard-item">
+                  <span className="leaderboard-rank" style={{ background: '#CD7F32', color: '#fff' }}>3</span>
+                  <span className="leaderboard-name">Raflhy</span>
+                  <span className="leaderboard-time">07:02</span>
+                </li>
+              </ul>
+              <p className="leaderboard-note">*Data ilustrasi sementara</p>
+            </motion.div>
           </div>
 
           {/* ── RIGHT: Form ── */}

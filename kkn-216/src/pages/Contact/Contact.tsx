@@ -166,6 +166,36 @@ const Contact: React.FC = () => {
         </div>
       </section>
 
+      {/* Map Section */}
+      <section className="map-section section-padding" style={{ background: 'var(--color-bg-dark)' }}>
+        <div className="container">
+          <motion.div
+            className="comic-card map-card"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            style={{ overflow: 'hidden', padding: 0 }}
+          >
+            <div className="map-card__header" style={{ padding: 'var(--space-4) var(--space-6)', background: 'var(--color-accent)', color: '#fff', borderBottom: 'var(--border)' }}>
+              <h3 className="section-title" style={{ fontSize: 'var(--text-2xl)', margin: 0, color: '#fff' }}>📍 Peta Desa Babakansari</h3>
+              <p style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-sm)', marginTop: '4px' }}>Kec. Sukaluyu, Kab. Cianjur, Jawa Barat</p>
+            </div>
+            <div className="map-container" style={{ width: '100%', height: '400px', background: '#e0e0e0' }}>
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15851.688208453535!2d107.21852655!3d-6.8152528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6853754988775f%3A0xe1db0ddfbfcb80cf!2sBabakansari%2C%20Sukaluyu%2C%20Cianjur%20Regency%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1714578111222!5m2!1sen!2sid" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen={false} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Peta Desa Babakansari"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Thank you section */}
       <section className="thankyou-section section-padding halftone-bg" style={{ borderTop: 'var(--border)' }}>
         <div className="container" style={{ textAlign: 'center' }}>
