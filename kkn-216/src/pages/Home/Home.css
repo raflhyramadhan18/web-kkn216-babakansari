@@ -353,10 +353,6 @@
 }
 
 /* ── SECTION HEADER ── */
-.section-header {
-  text-align: center;
-  margin-bottom: var(--space-12);
-}
 
 .section-desc {
   font-family: var(--font-heading);
