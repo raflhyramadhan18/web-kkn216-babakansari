@@ -9,8 +9,8 @@ import './Absensi.css';
 ───────────────────────────────── */
 const KKN_START = new Date('2026-07-21T00:00:00+07:00');
 const KKN_END   = new Date('2026-08-25T23:59:59+07:00');
-const OPEN_H    = 7;  // 07:xx WIB
-const CLOSE_H   = 8;  // 08:xx WIB
+const OPEN_H    = 0;  // 00:xx WIB (TEST MODE)
+const CLOSE_H   = 24; // 24:xx WIB (TEST MODE)
 
 /* ─────────────────────────────────
    Get current time as WIB (Jakarta, UTC+7)
