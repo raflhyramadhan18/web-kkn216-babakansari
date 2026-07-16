@@ -9,8 +9,8 @@ import './Absensi.css';
 ───────────────────────────────── */
 const KKN_START = new Date('2026-07-21T00:00:00+07:00');
 const KKN_END   = new Date('2026-08-25T23:59:59+07:00');
-const OPEN_H    = 6;  // 06:xx WIB
-const CLOSE_H   = 7;  // 07:xx WIB
+const OPEN_H    = 0;  // 00:xx WIB
+const CLOSE_H   = 24; // 24:xx WIB
 
 /* ─────────────────────────────────
    Get current time as WIB (Jakarta, UTC+7)
@@ -77,6 +77,49 @@ function fmtDate(d: Date): string {
 }
 
 /* ─────────────────────────────────
+   Sound Effects (Web Audio API)
+───────────────────────────────── */
+function playSound(type: 'success' | 'error' | 'locked') {
+  try {
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    
+    if (type === 'success') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+      osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // E5
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.3);
+    } else if (type === 'error') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(150, ctx.currentTime);
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.2);
+    } else if (type === 'locked') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(300, ctx.currentTime);
+      osc.frequency.setValueAtTime(250, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.3);
+    }
+  } catch (e) {
+    console.error('Audio error', e);
+  }
+}
+
+/* ─────────────────────────────────
    API endpoint:
    - In dev: calls GAS directly if VITE_GAS_URL is set
    - In production (Vercel): calls /api/absensi
@@ -128,6 +171,7 @@ const Absensi: React.FC = () => {
       setPinError(true);
       setPinShake(true);
       setPinInput('');
+      playSound('error');
       setTimeout(() => setPinShake(false), 500);
       return;
     }
@@ -144,10 +188,10 @@ const Absensi: React.FC = () => {
     if (!nama || !nim) return;
 
     // ⚡ Period check DISABLED during testing — enable on go-live by uncommenting:
-    // if (!inKKN) { setStatus('outside-kkn'); return; }
+    // if (!inKKN) { setStatus('outside-kkn'); playSound('locked'); return; }
 
-    if (!open)            { setStatus('closed');    return; }
-    if (alreadySubmitted()) { setStatus('duplicate'); return; }
+    if (!open)            { setStatus('closed'); playSound('locked'); return; }
+    if (alreadySubmitted()) { setStatus('duplicate'); playSound('locked'); return; }
 
     setStatus('loading');
 
@@ -182,11 +226,13 @@ const Absensi: React.FC = () => {
       if (success) {
         localStorage.setItem(`kkn216_absen_${nim}_${getDateKey(wib)}`, fmtTime(wib));
         setStatus('success');
+        playSound('success');
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Terjadi kesalahan';
       setErrMsg(msg);
       setStatus('error');
+      playSound('error');
     }
   };
 
@@ -252,7 +298,7 @@ const Absensi: React.FC = () => {
                   : <>🔴 <strong>ABSENSI TUTUP</strong><br />Buka dalam {fmtCountdown(minsUntilOpen(wib))}</>
                 }
               </div>
-              <div className="status-card__window">Jam absensi: 06:00 – 07:00 WIB</div>
+              <div className="status-card__window">Jam absensi: [TEST MODE] 24 Jam</div>
             </motion.div>
 
             {/* KKN day info */}
@@ -355,7 +401,7 @@ const Absensi: React.FC = () => {
                   <p className="result-sub">
                     {status === 'outside-kkn'
                       ? 'Absensi hanya tersedia 21 Juli – 25 Agustus 2026.'
-                      : `Absensi dibuka pukul 06:00 – 07:00 WIB. Sekarang ${fmtTime(wib)}.`}
+                      : `Absensi dibuka pukul [TEST MODE] 24 Jam. Sekarang ${fmtTime(wib)}.`}
                   </p>
                   <button className="comic-btn comic-btn-primary result-btn" onClick={reset}>
                     <RotateCcw size={16} strokeWidth={3} /> Kembali
@@ -496,7 +542,7 @@ const Absensi: React.FC = () => {
                   </button>
 
                   <p className="form-disclaimer">
-                    <XCircle size={12} strokeWidth={3} /> Absensi hanya bisa dilakukan 1x/hari pukul 06:00–07:00 WIB
+                    <XCircle size={12} strokeWidth={3} /> Absensi hanya bisa dilakukan 1x/hari pukul [TEST MODE] 24 Jam
                   </p>
                 </motion.form>
               )}
@@ -515,7 +561,7 @@ const Absensi: React.FC = () => {
           </div>
           <div className="rules-grid">
             {[
-              { icon: '⏰', title: 'Jam Absensi', desc: 'Hanya bisa absen pukul 06:00 – 07:00 WIB setiap harinya.' },
+              { icon: '⏰', title: 'Jam Absensi', desc: 'Hanya bisa absen pukul [TEST MODE] 24 Jam setiap harinya.' },
               { icon: '1️⃣', title: '1x Per Hari', desc: 'Setiap anggota hanya bisa melakukan 1x absensi per hari.' },
               { icon: '📅', title: 'Periode KKN', desc: 'Absensi aktif selama 21 Juli – 25 Agustus 2026 (36 hari).' },
               { icon: '📊', title: 'Rekap Otomatis', desc: 'Data tersimpan ke Google Sheets, bisa dilihat DPL kapan saja.' },
