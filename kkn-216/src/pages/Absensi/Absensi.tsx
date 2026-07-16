@@ -9,8 +9,8 @@ import './Absensi.css';
 ───────────────────────────────── */
 const KKN_START = new Date('2026-07-21T00:00:00+07:00');
 const KKN_END   = new Date('2026-08-25T23:59:59+07:00');
-const OPEN_H    = 0;  // 00:xx WIB (TEST MODE)
-const CLOSE_H   = 24; // 24:xx WIB (TEST MODE)
+const OPEN_H    = 6;  // 06:xx WIB
+const CLOSE_H   = 7;  // 07:xx WIB
 
 /* ─────────────────────────────────
    Get current time as WIB (Jakarta, UTC+7)
@@ -252,7 +252,7 @@ const Absensi: React.FC = () => {
                   : <>🔴 <strong>ABSENSI TUTUP</strong><br />Buka dalam {fmtCountdown(minsUntilOpen(wib))}</>
                 }
               </div>
-              <div className="status-card__window">Jam absensi: 07:00 – 08:00 WIB</div>
+              <div className="status-card__window">Jam absensi: 06:00 – 07:00 WIB</div>
             </motion.div>
 
             {/* KKN day info */}

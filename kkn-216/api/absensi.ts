@@ -9,11 +9,16 @@ function getWIB(): Date {
 }
 
 function isWindowOpen(wib: Date): boolean {
-  return true; // Buka 24 Jam (TEST MODE)
+  const h = wib.getUTCHours();
+  const m = wib.getUTCMinutes();
+  const t = h * 60 + m;
+  return t >= 6 * 60 && t < 7 * 60; // 06:00–07:00 WIB
 }
 
 function isKKNPeriod(wib: Date): boolean {
-  return true; // Bypass tanggal KKN (TEST MODE)
+  const start = new Date('2026-07-21T00:00:00Z'); // UTC midnight
+  const end   = new Date('2026-08-25T17:00:00Z'); // 25 Aug 23:59 WIB = 16:59 UTC
+  return wib >= start && wib <= end;
 }
 
 /* ────────────────────────────────────────
@@ -47,7 +52,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!isWindowOpen(wib)) {
     return res.status(400).json({
       success: false,
-      message: `Absensi hanya dibuka pukul 07:00–08:00 WIB. Sekarang ${wib.getUTCHours() + 7}:${String(wib.getUTCMinutes()).padStart(2,'0')} WIB`,
+      message: `Absensi hanya dibuka pukul 06:00–07:00 WIB. Sekarang ${wib.getUTCHours() + 7}:${String(wib.getUTCMinutes()).padStart(2,'0')} WIB`,
     });
   }
 
