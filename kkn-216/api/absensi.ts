@@ -9,16 +9,11 @@ function getWIB(): Date {
 }
 
 function isWindowOpen(wib: Date): boolean {
-  const h = wib.getUTCHours();
-  const m = wib.getUTCMinutes();
-  const t = h * 60 + m;
-  return t >= 7 * 60 && t < 8 * 60; // 07:00–08:00 WIB
+  return true; // Buka 24 Jam (TEST MODE)
 }
 
 function isKKNPeriod(wib: Date): boolean {
-  const start = new Date('2026-07-21T00:00:00Z'); // UTC midnight
-  const end   = new Date('2026-08-25T17:00:00Z'); // 25 Aug 23:59 WIB = 16:59 UTC
-  return wib >= start && wib <= end;
+  return true; // Bypass tanggal KKN (TEST MODE)
 }
 
 /* ────────────────────────────────────────
