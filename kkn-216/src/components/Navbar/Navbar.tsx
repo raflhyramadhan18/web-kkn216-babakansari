@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, Moon, Sun } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import './Navbar.css';
 
 const navLinks: { to: string; label: string; special?: boolean }[] = [
@@ -24,31 +24,6 @@ const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location]);
-
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.getItem('theme') === 'dark') {
-      setIsDark(true);
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('theme', 'light');
-      setIsDark(false);
-    } else {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
-      setIsDark(true);
-    }
-  };
 
   return (
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
@@ -79,39 +54,14 @@ const Navbar: React.FC = () => {
           ))}
         </ul>
 
-        <div className="navbar__actions" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          {/* Theme toggle */}
-          <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              border: '2px solid var(--color-border)',
-              background: 'var(--color-bg)',
-              color: 'var(--color-text)',
-              cursor: 'pointer',
-              boxShadow: '2px 2px 0 var(--color-border)',
-              transition: 'transform 0.2s',
-            }}
-          >
-            {isDark ? <Sun size={20} strokeWidth={3} /> : <Moon size={20} strokeWidth={3} />}
-          </button>
-
-          {/* Mobile toggle */}
-          <button
-            className="navbar__toggle"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={28} strokeWidth={3} /> : <Menu size={28} strokeWidth={3} />}
-          </button>
-        </div>
+        {/* Mobile toggle */}
+        <button
+          className="navbar__toggle"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <X size={28} strokeWidth={3} /> : <Menu size={28} strokeWidth={3} />}
+        </button>
       </div>
 
       {/* Mobile Menu */}

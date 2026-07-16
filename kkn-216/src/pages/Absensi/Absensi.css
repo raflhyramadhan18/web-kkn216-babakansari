@@ -136,6 +136,7 @@
 .leaderboard-card {
   background: var(--color-panel-2);
   padding: var(--space-5);
+  margin-top: var(--space-6);
 }
 
 .leaderboard-header {

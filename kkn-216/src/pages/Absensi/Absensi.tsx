@@ -339,7 +339,7 @@ const Absensi: React.FC = () => {
                   <div className="result-icon">⚠️</div>
                   <h2 className="result-title">SUDAH ABSEN!</h2>
                   <p className="result-msg"><strong>{nama}</strong></p>
-                  <p className="result-sub">Kamu sudah absen hari ini. Sampai besok jam 07:00!</p>
+                  <p className="result-sub">Kamu sudah absen hari ini. Sampai besok jam 06:00!</p>
                   <button className="comic-btn comic-btn-primary result-btn" onClick={reset}>
                     <RotateCcw size={16} strokeWidth={3} /> Kembali
                   </button>
@@ -355,7 +355,7 @@ const Absensi: React.FC = () => {
                   <p className="result-sub">
                     {status === 'outside-kkn'
                       ? 'Absensi hanya tersedia 21 Juli – 25 Agustus 2026.'
-                      : `Absensi dibuka pukul 07:00 – 08:00 WIB. Sekarang ${fmtTime(wib)}.`}
+                      : `Absensi dibuka pukul 06:00 – 07:00 WIB. Sekarang ${fmtTime(wib)}.`}
                   </p>
                   <button className="comic-btn comic-btn-primary result-btn" onClick={reset}>
                     <RotateCcw size={16} strokeWidth={3} /> Kembali
@@ -496,7 +496,7 @@ const Absensi: React.FC = () => {
                   </button>
 
                   <p className="form-disclaimer">
-                    <XCircle size={12} strokeWidth={3} /> Absensi hanya bisa dilakukan 1x/hari pukul 07:00–08:00 WIB
+                    <XCircle size={12} strokeWidth={3} /> Absensi hanya bisa dilakukan 1x/hari pukul 06:00–07:00 WIB
                   </p>
                 </motion.form>
               )}
@@ -515,7 +515,7 @@ const Absensi: React.FC = () => {
           </div>
           <div className="rules-grid">
             {[
-              { icon: '⏰', title: 'Jam Absensi', desc: 'Hanya bisa absen pukul 07:00 – 08:00 WIB setiap harinya.' },
+              { icon: '⏰', title: 'Jam Absensi', desc: 'Hanya bisa absen pukul 06:00 – 07:00 WIB setiap harinya.' },
               { icon: '1️⃣', title: '1x Per Hari', desc: 'Setiap anggota hanya bisa melakukan 1x absensi per hari.' },
               { icon: '📅', title: 'Periode KKN', desc: 'Absensi aktif selama 21 Juli – 25 Agustus 2026 (36 hari).' },
               { icon: '📊', title: 'Rekap Otomatis', desc: 'Data tersimpan ke Google Sheets, bisa dilihat DPL kapan saja.' },
