@@ -1,0 +1,391 @@
+/* ═══════════════════════════════
+   ABSENSI PAGE
+═══════════════════════════════ */
+
+.absensi-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 48px; /* clear separation between clock col and form col */
+  align-items: start;
+}
+
+/* ── Clock ── */
+.clock-card {
+  background: var(--color-white);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  margin-bottom: var(--space-5);
+}
+
+.clock-time {
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--color-primary);
+}
+
+.clock-date {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.clock-zone {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  background: var(--color-bg-alt);
+  border: 2px solid var(--color-border);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  box-shadow: 2px 2px 0 #000;
+}
+
+/* ── Status card ── */
+.status-card {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.status-card--open {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+}
+
+.status-card--closed {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+}
+
+.status-card__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.status-card--open .status-card__dot { background: #16a34a; }
+.status-card--closed .status-card__dot { background: #dc2626; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.status-card__text {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.status-card__window {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+/* ── KKN Day card ── */
+.kkn-day-card {
+  background: var(--color-secondary);
+  padding: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.kkn-day-card--pending {
+  background: var(--color-panel-4);
+}
+
+.kkn-day-num {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.kkn-day-label {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 800;
+}
+
+.kkn-day-sub {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* ── Form ── */
+.absensi-form {
+  background: var(--color-white);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.absensi-form__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.absensi-form__title {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  letter-spacing: 0.04em;
+}
+
+.absensi-alert {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: #fff7ed;
+  border: 2px solid #f97316;
+  border-radius: var(--radius-sm);
+  box-shadow: 3px 3px 0 #000;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: #c2410c;
+}
+
+/* Form controls */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-label {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 800;
+}
+
+.form-select,
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 700;
+  border: var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  background: var(--color-white);
+  color: var(--color-text);
+  outline: none;
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+  -webkit-appearance: none;
+}
+
+.form-select:focus,
+.form-input:focus {
+  box-shadow: 4px 4px 0 var(--color-primary);
+  transform: translate(-2px, -2px);
+}
+
+.form-hint {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.form-hint--warn {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1.5px solid #f97316;
+}
+
+.form-info-row {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.form-info-row span {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  background: var(--color-bg-alt);
+  border: 2px solid var(--color-border);
+  box-shadow: 2px 2px 0 #000;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+}
+
+/* Submit button */
+.absensi-submit-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: var(--text-lg) !important;
+  justify-content: center;
+  gap: var(--space-3) !important;
+  margin-top: var(--space-2);
+  position: relative;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.form-disclaimer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-align: center;
+  justify-content: center;
+}
+
+/* ── Result states ── */
+.absensi-result {
+  padding: var(--space-10) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  min-height: 360px;
+  justify-content: center;
+}
+
+.absensi-result--success { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+.absensi-result--warn    { background: linear-gradient(135deg, #fef9c3, #fde68a); }
+.absensi-result--error   { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+
+.result-icon { font-size: 5rem; line-height: 1; }
+
+.result-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.result-msg {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 800;
+}
+
+.result-sub {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  max-width: 360px;
+}
+
+.result-time {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--color-primary);
+}
+
+.result-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: #fff;
+  border: var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  margin-top: var(--space-2);
+}
+
+.result-btn {
+  margin-top: var(--space-3) !important;
+  justify-content: center;
+}
+
+/* ── Rules ── */
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px; /* clear gap between rule cards */
+}
+
+.rule-card {
+  background: var(--color-white);
+  padding: var(--space-7) var(--space-6);  /* more vertical padding */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.rule-icon { font-size: 3rem; }
+
+.rule-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  letter-spacing: 0.04em;
+}
+
+.rule-desc {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .absensi-layout {
+    grid-template-columns: 1fr;
+  }
+  .absensi-status-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+  .kkn-day-card { grid-column: span 2; }
+  .rules-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .absensi-status-col { grid-template-columns: 1fr; }
+  .kkn-day-card { grid-column: auto; }
+  .rules-grid { grid-template-columns: 1fr; }
+  .absensi-form { padding: var(--space-5); }
+  .absensi-result { padding: var(--space-7) var(--space-5); }
+}

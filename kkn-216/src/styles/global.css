@@ -1,0 +1,289 @@
+/* ============================================
+   GLOBAL STYLES — KKN 216 BABAKANSARI
+   Comic / Pop-Art Theme
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
+@import './variables.css';
+
+/* === RESET === */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 500;
+  line-height: 1.8;
+  color: var(--color-text-muted);
+  letter-spacing: 0.01em;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* === TYPOGRAPHY === */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+/* === COMIC UTILITIES === */
+
+/* Comic card — the signature look */
+.comic-card {
+  background: var(--color-white);
+  border: var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.comic-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Comic button */
+.comic-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  letter-spacing: 0.08em;
+  border: var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+}
+
+.comic-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-md);
+}
+
+.comic-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+.comic-btn-primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.comic-btn-secondary {
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.comic-btn-accent {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.comic-btn-outline {
+  background: var(--color-white);
+  color: var(--color-text);
+}
+
+/* Section title */
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  letter-spacing: 0.05em;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title-underline {
+  position: relative;
+}
+
+.section-title-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 6px;
+  background: var(--color-secondary);
+  border: 2px solid var(--color-border);
+  border-radius: 3px;
+}
+
+/* Halftone pattern */
+.halftone-bg {
+  background-image: radial-gradient(circle, #00000015 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+
+/* Comic badge */
+.comic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-full);
+  box-shadow: 2px 2px 0 #000;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Starburst shape */
+.starburst {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.starburst::before {
+  content: '★';
+  position: absolute;
+  font-size: 2em;
+  color: var(--color-secondary);
+  z-index: -1;
+  -webkit-text-stroke: 3px var(--color-border);
+}
+
+/* Speech bubble */
+.speech-bubble {
+  position: relative;
+  background: var(--color-white);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 40px;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 22px solid var(--color-border);
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: 43px;
+  width: 0;
+  height: 0;
+  border-left: 17px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 18px solid var(--color-white);
+  z-index: 1;
+}
+
+/* Zigzag divider */
+.zigzag-divider {
+  width: 100%;
+  height: 30px;
+  background: linear-gradient(135deg, var(--color-bg) 25%, transparent 25%) -20px 0,
+              linear-gradient(225deg, var(--color-bg) 25%, transparent 25%) -20px 0,
+              linear-gradient(315deg, var(--color-bg) 25%, transparent 25%),
+              linear-gradient(45deg, var(--color-bg) 25%, transparent 25%);
+  background-size: 40px 40px;
+  background-color: var(--color-primary);
+}
+
+/* Comic panel border */
+.panel-border {
+  border: var(--border);
+  border-radius: var(--radius-md);
+}
+
+/* Section container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.section-padding {
+  padding: var(--space-20) 0;
+}
+
+/* Grid helpers */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .section-title { font-size: var(--text-4xl); }
+  .container { padding: 0 var(--space-4); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
