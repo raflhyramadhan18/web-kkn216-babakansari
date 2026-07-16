@@ -331,16 +331,17 @@
 
 .member-modal__num {
   position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
+  top: -16px;
+  left: -16px;
   font-family: var(--font-display);
-  font-size: var(--text-xl);
+  font-size: var(--text-2xl);
   color: #fff;
-  padding: 4px 12px;
+  padding: 8px 16px;
   border: var(--border);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-sm);
-  z-index: 2;
+  z-index: 3;
+  transform: rotate(-5deg);
 }
 
 .member-modal__photo-wrap {
@@ -368,38 +369,40 @@
 }
 
 .member-modal__role {
-  font-size: 13px !important;
+  font-size: 14px !important;
   width: fit-content;
+  margin-bottom: 8px;
 }
 
 .member-modal__name {
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   letter-spacing: 0.04em;
-  line-height: 1.1;
+  line-height: 1.25;
+  margin-bottom: var(--space-2);
 }
 
 .member-modal__details {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  margin-top: var(--space-1);
+  gap: var(--space-4);
+  margin-top: var(--space-2);
 }
 
 .member-modal__details li {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-2);
+  gap: var(--space-3);
   font-family: var(--font-heading);
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--color-text-muted);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--space-4);
   background: var(--color-bg-alt);
   border: 2px solid var(--color-border);
   border-radius: var(--radius-sm);
-  box-shadow: 2px 2px 0 #000;
+  box-shadow: 3px 3px 0 #000;
 }
 
 .member-modal__details li svg {
@@ -410,7 +413,7 @@
 
 .member-modal__ig {
   width: fit-content;
-  margin-top: var(--space-2);
+  margin-top: var(--space-6);
   justify-content: center;
 }
 
