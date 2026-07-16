@@ -88,13 +88,20 @@ const ABSENSI_API  = '/api/absensi';
    Component
 ───────────────────────────────── */
 type Status = 'idle' | 'loading' | 'success' | 'duplicate' | 'closed' | 'outside-kkn' | 'error';
+// Two-step flow: 'pin' = entering PIN, 'confirmed' = identity verified
+type Step = 'pin' | 'confirmed';
 
 const Absensi: React.FC = () => {
-  const [wib, setWib]         = useState(getWIB());
-  const [nama, setNama]       = useState('');
-  const [nim, setNim]         = useState('');
-  const [status, setStatus]   = useState<Status>('idle');
-  const [errMsg, setErrMsg]   = useState('');
+  const [wib, setWib]           = useState(getWIB());
+  const [step, setStep]         = useState<Step>('pin');
+  const [pinInput, setPinInput] = useState('');
+  const [pinError, setPinError] = useState(false);
+  const [pinShake, setPinShake] = useState(false);
+  // identity — locked once PIN verified
+  const [nama, setNama]         = useState('');
+  const [nim, setNim]           = useState('');
+  const [status, setStatus]     = useState<Status>('idle');
+  const [errMsg, setErrMsg]     = useState('');
 
   /* tick every second */
   useEffect(() => {
@@ -102,66 +109,68 @@ const Absensi: React.FC = () => {
     return () => clearInterval(id);
   }, []);
 
-  /* auto-fill NIM when name selected */
-  useEffect(() => {
-    const found = members.find(m => m.name === nama);
-    setNim(found?.nim ?? '');
-  }, [nama]);
-
   const alreadySubmitted = useCallback(() => {
     if (!nim) return false;
     const key = `kkn216_absen_${nim}_${getDateKey(wib)}`;
     return !!localStorage.getItem(key);
   }, [nim, wib]);
 
-  const open    = isWindowOpen(wib);
-  const inKKN   = isKKNPeriod(wib);
-  const kkDay   = inKKN ? getKKNDay(wib) : 0;
+  const open  = isWindowOpen(wib);
+  const inKKN = isKKNPeriod(wib);
+  const kkDay = inKKN ? getKKNDay(wib) : 0;
 
+  /* ── Step 1: verify PIN ── */
+  const handlePinSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const found = members.find(m => m.pin === pinInput.trim());
+    if (!found) {
+      // wrong pin — shake animation
+      setPinError(true);
+      setPinShake(true);
+      setPinInput('');
+      setTimeout(() => setPinShake(false), 500);
+      return;
+    }
+    // correct!
+    setPinError(false);
+    setNama(found.name);
+    setNim(found.nim);
+    setStep('confirmed');
+  };
+
+  /* ── Step 2: submit attendance ── */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!nama || !nim) return;
 
     // ⚡ Period check DISABLED during testing — enable on go-live by uncommenting:
-    // if (!inKKN)  { setStatus('outside-kkn'); return; }
+    // if (!inKKN) { setStatus('outside-kkn'); return; }
 
-    if (!open)   { setStatus('closed'); return; }
+    if (!open)            { setStatus('closed');    return; }
     if (alreadySubmitted()) { setStatus('duplicate'); return; }
 
     setStatus('loading');
 
-    const hariKe = inKKN ? kkDay : 0; // 0 = test mode
-    const payload = {
-      nama,
-      nim,
-      tanggal: fmtDate(wib),
-      waktu: fmtTime(wib),
-      hariKe,
-    };
+    const hariKe = inKKN ? kkDay : 0;
+    const payload = { nama, nim, tanggal: fmtDate(wib), waktu: fmtTime(wib), hariKe };
 
     try {
-      // ── Try Vercel API first (works in production) ──
-      // ── In dev, fallback to GAS directly if VITE_GAS_URL is set ──
       let success = false;
 
       if (GAS_URL) {
-        // Dev mode: call GAS directly with no-cors (response is opaque, we trust it)
         await fetch(GAS_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify(payload),
         });
-        // no-cors gives opaque response, assume success
         success = true;
       } else {
-        // Production: use Vercel API route
         const res = await fetch(ABSENSI_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
-
         if (!res.ok) {
           const data = await res.json().catch(() => ({})) as { message?: string; code?: string };
           if (data.code === 'DUPLICATE') { setStatus('duplicate'); return; }
@@ -171,7 +180,6 @@ const Absensi: React.FC = () => {
       }
 
       if (success) {
-        // Save to localStorage as frontend duplicate-lock
         localStorage.setItem(`kkn216_absen_${nim}_${getDateKey(wib)}`, fmtTime(wib));
         setStatus('success');
       }
@@ -182,7 +190,15 @@ const Absensi: React.FC = () => {
     }
   };
 
-  const reset = () => { setStatus('idle'); setErrMsg(''); };
+  const reset = () => {
+    setStatus('idle');
+    setErrMsg('');
+    // back to PIN step for security
+    setStep('pin');
+    setPinInput('');
+    setNama('');
+    setNim('');
+  };
 
   /* ── render ── */
   return (
@@ -333,19 +349,20 @@ const Absensi: React.FC = () => {
                 </motion.div>
               )}
 
-              {/* FORM */}
-              {(status === 'idle' || status === 'loading') && (
+              {/* FORM ─ Step 1: PIN */}
+              {step === 'pin' && (status === 'idle' || status === 'loading') && (
                 <motion.form
-                  key="form"
-                  className="absensi-form comic-card"
-                  onSubmit={handleSubmit}
+                  key="pin-form"
+                  className={`absensi-form comic-card${pinShake ? ' pin-shake' : ''}`}
+                  onSubmit={handlePinSubmit}
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 >
                   <div className="absensi-form__header">
-                    <span className="comic-badge" style={{ background: 'var(--color-panel-1)' }}>
-                      📋 Form Absensi Harian
+                    <span className="comic-badge" style={{ background: 'var(--color-panel-4)' }}>
+                      🔐 Verifikasi Identitas
                     </span>
-                    <h2 className="absensi-form__title">Isi Data Kamu!</h2>
+                    <h2 className="absensi-form__title">Masukkan PIN Kamu!</h2>
+                    <p className="pin-hint">Setiap anggota punya PIN unik. PIN hanya kamu yang tahu.</p>
                   </div>
 
                   {/* Alert if closed */}
@@ -356,41 +373,81 @@ const Absensi: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Name select */}
+                  {/* PIN input */}
                   <div className="form-group">
-                    <label className="form-label" htmlFor="nama-select">Pilih Namamu 👤</label>
-                    <select
-                      id="nama-select"
-                      className="form-select"
-                      value={nama}
-                      onChange={e => setNama(e.target.value)}
-                      required
-                    >
-                      <option value="">— Pilih Nama —</option>
-                      {members.map(m => (
-                        <option key={m.id} value={m.name}>{m.name} ({m.role})</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* NIM (auto-filled, read-only) */}
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="nim-input">NIM 🎓</label>
+                    <label className="form-label" htmlFor="pin-input">🔢 PIN Kamu (4 digit)</label>
                     <input
-                      id="nim-input"
-                      type="text"
-                      className="form-input"
-                      value={nim}
-                      onChange={e => setNim(e.target.value)}
-                      placeholder="NIM otomatis terisi"
+                      id="pin-input"
+                      type="password"
+                      inputMode="numeric"
+                      maxLength={4}
+                      className={`form-input pin-input${pinError ? ' form-input--error' : ''}`}
+                      value={pinInput}
+                      onChange={e => { setPinInput(e.target.value.replace(/\D/g, '')); setPinError(false); }}
+                      placeholder="••••"
+                      autoComplete="off"
                       required
                     />
-                    {nim && alreadySubmitted() && (
-                      <p className="form-hint form-hint--warn">
-                        ⚠️ Kamu sudah absen hari ini!
+                    {pinError && (
+                      <p className="form-hint form-hint--error">
+                        ❌ PIN salah! Coba lagi atau hubungi Ketua.
                       </p>
                     )}
                   </div>
+
+                  <button
+                    type="submit"
+                    className="comic-btn comic-btn-primary absensi-submit-btn"
+                    disabled={pinInput.length < 4}
+                  >
+                    🔓 Verifikasi PIN
+                  </button>
+
+                  <p className="form-disclaimer">
+                    <XCircle size={12} strokeWidth={3} /> PIN bersifat rahasia. Jangan berikan ke orang lain!
+                  </p>
+                </motion.form>
+              )}
+
+              {/* FORM ─ Step 2: Confirm & Submit */}
+              {step === 'confirmed' && (status === 'idle' || status === 'loading') && (
+                <motion.form
+                  key="absen-form"
+                  className="absensi-form comic-card"
+                  onSubmit={handleSubmit}
+                  initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}
+                >
+                  <div className="absensi-form__header">
+                    <span className="comic-badge" style={{ background: 'var(--color-panel-1)' }}>
+                      ✅ Identitas Terverifikasi
+                    </span>
+                    <h2 className="absensi-form__title">Konfirmasi Absensi!</h2>
+                  </div>
+
+                  {/* Alert if closed */}
+                  {!open && (
+                    <div className="absensi-alert">
+                      <AlertTriangle size={18} strokeWidth={3} />
+                      <span>Absensi belum/sudah berakhir. Tetap isi untuk uji coba.</span>
+                    </div>
+                  )}
+
+                  {/* Identity locked card */}
+                  <div className="identity-card">
+                    <div className="identity-card__avatar">👤</div>
+                    <div className="identity-card__info">
+                      <div className="identity-card__name">{nama}</div>
+                      <div className="identity-card__nim">NIM: {nim}</div>
+                      <div className="identity-card__lock">🔒 Identitas terkunci</div>
+                    </div>
+                  </div>
+
+                  {/* duplicate warning */}
+                  {alreadySubmitted() && (
+                    <p className="form-hint form-hint--warn">
+                      ⚠️ Kamu sudah absen hari ini!
+                    </p>
+                  )}
 
                   {/* Info row */}
                   <div className="form-info-row">
@@ -402,7 +459,7 @@ const Absensi: React.FC = () => {
                   <button
                     type="submit"
                     className={`comic-btn absensi-submit-btn ${open ? 'comic-btn-primary' : 'comic-btn-accent'}`}
-                    disabled={status === 'loading' || !nama}
+                    disabled={status === 'loading'}
                   >
                     {status === 'loading' ? (
                       <><span className="btn-spinner" /> Mengirim...</>

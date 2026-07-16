@@ -1,10 +1,18 @@
 import type { Member } from '../types';
 
+// ─────────────────────────────────────────────────
+//  PENTING: Ganti PIN di bawah sesuai kesepakatan!
+//  Bagikan PIN ini secara PRIBADI ke masing-masing
+//  anggota (jangan publish di grup/media sosial).
+//  PIN bisa diganti kapan saja, lalu push ke GitHub.
+// ─────────────────────────────────────────────────
+
 export const members: Member[] = [
   {
     id: 1,
     name: 'Ahmad Fauzi Ramadhan',
     nim: '2022101001',
+    pin: '1234',  // ← Ganti PIN ini!
     role: 'Ketua',
     faculty: 'Fakultas Sains dan Teknologi',
     major: 'Teknik Informatika',
@@ -15,6 +23,7 @@ export const members: Member[] = [
     id: 2,
     name: 'Siti Nurhaliza Putri',
     nim: '2022201002',
+    pin: '2345',
     role: 'Sekretaris',
     faculty: 'Fakultas Tarbiyah dan Keguruan',
     major: 'Pendidikan Agama Islam',
@@ -25,6 +34,7 @@ export const members: Member[] = [
     id: 3,
     name: 'Muhammad Rizky Pratama',
     nim: '2022301003',
+    pin: '3456',
     role: 'Bendahara',
     faculty: 'Fakultas Ekonomi dan Bisnis Islam',
     major: 'Manajemen Keuangan Syariah',
@@ -35,6 +45,7 @@ export const members: Member[] = [
     id: 4,
     name: 'Dewi Rahmawati',
     nim: '2022201004',
+    pin: '4567',
     role: 'Koordinator Proker Pendidikan',
     faculty: 'Fakultas Tarbiyah dan Keguruan',
     major: 'Pendidikan Bahasa Arab',
@@ -45,6 +56,7 @@ export const members: Member[] = [
     id: 5,
     name: 'Budi Santoso',
     nim: '2022101005',
+    pin: '5678',
     role: 'Koordinator Proker Lingkungan',
     faculty: 'Fakultas Sains dan Teknologi',
     major: 'Agroteknologi',
@@ -55,6 +67,7 @@ export const members: Member[] = [
     id: 6,
     name: 'Nurul Hidayah',
     nim: '2022401006',
+    pin: '6789',
     role: 'Koordinator Proker Kesehatan',
     faculty: 'Fakultas Kedokteran dan Ilmu Kesehatan',
     major: 'Kesehatan Masyarakat',
@@ -65,6 +78,7 @@ export const members: Member[] = [
     id: 7,
     name: 'Fajar Kurniawan',
     nim: '2022101007',
+    pin: '7890',
     role: 'Koordinator Proker Digital',
     faculty: 'Fakultas Sains dan Teknologi',
     major: 'Sistem Informasi',
@@ -75,6 +89,7 @@ export const members: Member[] = [
     id: 8,
     name: 'Anisa Fitriani',
     nim: '2022301008',
+    pin: '8901',
     role: 'Koordinator Proker UMKM',
     faculty: 'Fakultas Ekonomi dan Bisnis Islam',
     major: 'Ekonomi Syariah',
@@ -85,6 +100,7 @@ export const members: Member[] = [
     id: 9,
     name: 'Hendra Setiawan',
     nim: '2022501009',
+    pin: '9012',
     role: 'Koordinator Proker Keagamaan',
     faculty: 'Fakultas Ushuluddin',
     major: 'Ilmu Al-Quran dan Tafsir',
@@ -95,6 +111,7 @@ export const members: Member[] = [
     id: 10,
     name: 'Rini Anggraeni',
     nim: '2022601010',
+    pin: '1357',
     role: 'Koordinator Proker Sosial',
     faculty: 'Fakultas Ilmu Sosial dan Ilmu Politik',
     major: 'Komunikasi dan Penyiaran Islam',
@@ -105,6 +122,7 @@ export const members: Member[] = [
     id: 11,
     name: 'Dani Firmansyah',
     nim: '2022101011',
+    pin: '2468',
     role: 'Koordinator Proker Infrastruktur',
     faculty: 'Fakultas Sains dan Teknologi',
     major: 'Teknik Arsitektur',
@@ -115,6 +133,7 @@ export const members: Member[] = [
     id: 12,
     name: 'Lestari Wulandari',
     nim: '2022201012',
+    pin: '3579',
     role: 'Anggota',
     faculty: 'Fakultas Tarbiyah dan Keguruan',
     major: 'Pendidikan Guru Madrasah Ibtidaiyah',
@@ -125,6 +144,7 @@ export const members: Member[] = [
     id: 13,
     name: 'Yusuf Abdillah',
     nim: '2022701013',
+    pin: '4680',
     role: 'Anggota',
     faculty: 'Fakultas Syariah dan Hukum',
     major: 'Hukum Keluarga Islam',
@@ -135,6 +155,7 @@ export const members: Member[] = [
     id: 14,
     name: 'Mega Silviana',
     nim: '2022801014',
+    pin: '5791',
     role: 'Humas',
     faculty: 'Fakultas Dakwah dan Komunikasi',
     major: 'Komunikasi Penyiaran Islam',

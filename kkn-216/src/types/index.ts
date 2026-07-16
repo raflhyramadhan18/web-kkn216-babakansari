@@ -7,6 +7,7 @@ export interface Member {
   major: string;
   photo: string;
   instagram?: string;
+  pin: string; // PIN rahasia anti-joki (4 digit)
 }
 
 export interface Program {
