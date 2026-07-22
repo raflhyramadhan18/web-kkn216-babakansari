@@ -19,6 +19,7 @@ const Logbook: React.FC = () => {
   // Feed state
   const [logs, setLogs] = useState<LogData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Form state
   const [step, setStep] = useState<'pin' | 'form'>('pin');
@@ -140,43 +141,98 @@ const Logbook: React.FC = () => {
     setIsSubmitting(false);
   };
 
-  const downloadPDF = () => {
+  const downloadPDF = async () => {
     const targetLogs = logs.filter(l => l.nama === userNama);
     if (targetLogs.length === 0) return alert('Tidak ada data logbook');
 
-    const doc = new jsPDF();
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(16);
-    doc.text(`Logbook Harian KKN 216 - ${userNama}`, 14, 15);
-    
-    doc.setFontSize(10);
-    doc.text(`Dicetak pada: ${new Date().toLocaleString('id-ID')}`, 14, 22);
+    setIsExporting(true);
+    try {
+      const doc = new jsPDF();
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text(`Logbook Harian KKN 216 - ${userNama}`, 14, 15);
+      
+      doc.setFontSize(10);
+      doc.text(`Dicetak pada: ${new Date().toLocaleString('id-ID')}`, 14, 22);
 
-    const tableColumn = ["Tanggal", "Nama", "Kegiatan", "Deskripsi"];
-    const tableRows = targetLogs.map(l => [
-      l.tanggal,
-      l.nama,
-      l.kegiatan,
-      l.deskripsi
-    ]);
+      const tableColumn = ["Tanggal", "Kegiatan", "Deskripsi", "Foto"];
+      const tableRows = targetLogs.map(l => [
+        formatDisplayDate(l.tanggal),
+        l.kegiatan,
+        l.deskripsi,
+        "" // Placeholder for image
+      ]);
 
-    autoTable(doc, {
-      head: [tableColumn],
-      body: tableRows,
-      startY: 28,
-      styles: { fontSize: 9 },
-      headStyles: { fillColor: [4, 120, 87] } // Primary color
-    });
+      const images: { [key: number]: HTMLImageElement } = {};
+      for (let i = 0; i < targetLogs.length; i++) {
+        if (targetLogs[i].fotoUrl) {
+          try {
+            const imgUrl = getDirectImageUrl(targetLogs[i].fotoUrl);
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            await new Promise((resolve, reject) => {
+              img.onload = () => { images[i] = img; resolve(true); };
+              img.onerror = reject;
+              img.src = imgUrl;
+            });
+          } catch (e) {
+            console.error("Failed to load image for PDF", e);
+          }
+        }
+      }
 
-    doc.save(`Logbook_KKN_${userNama.replace(/\s+/g, '_')}.pdf`);
+      autoTable(doc, {
+        head: [tableColumn],
+        body: tableRows,
+        startY: 28,
+        styles: { fontSize: 9, minCellHeight: 30, valign: 'middle' },
+        headStyles: { fillColor: [4, 120, 87] },
+        columnStyles: { 3: { cellWidth: 35 } },
+        didDrawCell: (data) => {
+          if (data.section === 'body' && data.column.index === 3) {
+            const img = images[data.row.index];
+            if (img) {
+              const padding = 2;
+              const cellHeight = data.cell.height - padding * 2;
+              const cellWidth = data.cell.width - padding * 2;
+              
+              // Aspect ratio calculation to fit image inside cell width/height
+              const imgRatio = img.width / img.height;
+              const cellRatio = cellWidth / cellHeight;
+              
+              let drawWidth = cellWidth;
+              let drawHeight = cellHeight;
+              
+              if (imgRatio > cellRatio) {
+                drawHeight = cellWidth / imgRatio;
+              } else {
+                drawWidth = cellHeight * imgRatio;
+              }
+              
+              const xPos = data.cell.x + padding + (cellWidth - drawWidth) / 2;
+              const yPos = data.cell.y + padding + (cellHeight - drawHeight) / 2;
+              
+              doc.addImage(img, 'JPEG', xPos, yPos, drawWidth, drawHeight);
+            }
+          }
+        }
+      });
+
+      doc.save(`Logbook_KKN_${userNama.replace(/\s+/g, '_')}.pdf`);
+    } catch (e) {
+      console.error(e);
+      alert('Gagal mengekspor PDF');
+    }
+    setIsExporting(false);
   };
-
-  const displayedLogs = logs.filter(l => l.nama === userNama);
 
   const getDirectImageUrl = (url: string) => {
     if (!url) return '';
     const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+    if (match) {
+      const driveUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`;
+      return `/api/proxy-image?url=${encodeURIComponent(driveUrl)}`;
+    }
     return url;
   };
 
@@ -289,8 +345,8 @@ const Logbook: React.FC = () => {
             ) : (
               <>
                 <div className="logbook-filters" style={{ justifyContent: 'flex-end', marginBottom: '16px', display: 'flex' }}>
-                  <button className="comic-btn comic-btn-secondary" onClick={downloadPDF} style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
-                    <Download size={16} /> Export PDF
+                  <button className="comic-btn comic-btn-secondary" onClick={downloadPDF} style={{ padding: '8px 16px', fontSize: '0.9rem' }} disabled={isExporting}>
+                    <Download size={16} /> {isExporting ? 'Mengekspor...' : 'Export PDF'}
                   </button>
                 </div>
 
