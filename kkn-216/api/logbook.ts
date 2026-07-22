@@ -21,7 +21,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     } 
     
     if (req.method === 'POST') {
-      const { nama, nim, tanggal, kegiatan, deskripsi, foto } = req.body;
+      let body = req.body;
+      if (typeof body === 'string') {
+        try { body = JSON.parse(body); } catch(e) {}
+      }
+      const { nama, nim, tanggal, kegiatan, deskripsi, foto } = body || {};
       const fetchRes = await fetch(gasUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
