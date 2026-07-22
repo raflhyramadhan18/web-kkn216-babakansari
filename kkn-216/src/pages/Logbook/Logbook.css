@@ -77,6 +77,64 @@
   margin-bottom: var(--space-2);
 }
 
+.logbook-item__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+/* === FEED THUMBNAIL === */
+.logbook-item__thumb-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-border);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.logbook-item__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.logbook-item__thumb-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.logbook-item__thumb-overlay span {
+  color: white;
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-align: center;
+  padding: 4px;
+}
+
+.logbook-item__thumb-wrap:hover .logbook-item__thumb {
+  transform: scale(1.1);
+}
+
+.logbook-item__thumb-wrap:hover .logbook-item__thumb-overlay {
+  opacity: 1;
+}
+
+/* === PHOTO MODAL === */
+
 .logbook-item__meta {
   font-size: var(--text-sm);
   color: var(--color-text-muted);

@@ -370,12 +370,15 @@ const Logbook: React.FC = () => {
                         <span>👤 {log.nama}</span>
                       </div>
                       <p className="logbook-item__desc">{log.deskripsi}</p>
-                      {log.fotoUrl && (
-                        <button className="comic-btn comic-btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem', marginTop: '12px' }} onClick={() => setSelectedPhoto(getDirectImageUrl(log.fotoUrl))}>
-                          <ImageIcon size={16} /> Lihat Foto
-                        </button>
-                      )}
                     </div>
+                    {log.fotoUrl && (
+                      <div className="logbook-item__thumb-wrap" onClick={() => setSelectedPhoto(getDirectImageUrl(log.fotoUrl))}>
+                        <img src={getDirectImageUrl(log.fotoUrl)} alt="Thumbnail" className="logbook-item__thumb" />
+                        <div className="logbook-item__thumb-overlay">
+                          <span>🔍 Show Detail</span>
+                        </div>
+                      </div>
+                    )}
                   </motion.div>
                 ))}
               </div>
