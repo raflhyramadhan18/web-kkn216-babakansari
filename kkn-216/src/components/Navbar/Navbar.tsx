@@ -12,6 +12,7 @@ const navLinks: { to: string; label: string; special?: boolean }[] = [
   { to: '/timeline', label: 'Timeline' },
   { to: '/kontak', label: 'Kontak' },
   { to: '/absensi', label: '✋ Absensi', special: true },
+  { to: '/logbook', label: '📖 Logbook', special: true },
 ];
 
 const Navbar: React.FC = () => {

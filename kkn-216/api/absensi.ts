@@ -44,17 +44,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const wib = getWIB();
 
   // Period check
-  // if (!isKKNPeriod(wib)) {
-  //   return res.status(400).json({ success: false, message: 'Di luar periode KKN (21 Jul – 25 Agt 2026)' });
-  // }
+  if (!isKKNPeriod(wib)) {
+    return res.status(400).json({ success: false, message: 'Di luar periode KKN (21 Jul – 25 Agt 2026)' });
+  }
 
   // Time window check
-  // if (!isWindowOpen(wib)) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     message: `Absensi hanya dibuka pukul 06:00–07:00 WIB. Sekarang ${wib.getUTCHours() + 7}:${String(wib.getUTCMinutes()).padStart(2,'0')} WIB`,
-  //   });
-  // }
+  if (!isWindowOpen(wib)) {
+    return res.status(400).json({
+      success: false,
+      message: `Absensi hanya dibuka pukul 06:00–07:00 WIB. Sekarang ${wib.getUTCHours() + 7}:${String(wib.getUTCMinutes()).padStart(2,'0')} WIB`,
+    });
+  }
 
   // Forward to Google Apps Script (which handles duplicate check & Sheet write)
   const gasUrl = process.env.GAS_URL;

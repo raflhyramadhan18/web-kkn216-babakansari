@@ -10,6 +10,7 @@ import Team from './pages/Team/Team';
 import Timeline from './pages/Timeline/Timeline';
 import Contact from './pages/Contact/Contact';
 import Absensi from './pages/Absensi/Absensi';
+import Logbook from './pages/Logbook/Logbook';
 import './styles/global.css';
 
 const App: React.FC = () => {
@@ -26,6 +27,7 @@ const App: React.FC = () => {
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/kontak" element={<Contact />} />
           <Route path="/absensi" element={<Absensi />} />
+          <Route path="/logbook" element={<Logbook />} />
         </Routes>
       </main>
       <Footer />

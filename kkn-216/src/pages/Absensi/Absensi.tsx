@@ -7,10 +7,10 @@ import './Absensi.css';
 /* ─────────────────────────────────
    Helpers
 ───────────────────────────────── */
-const KKN_START = new Date('2026-07-21T00:00:00+07:00');
+const KKN_START = new Date('2026-07-22T00:00:00+07:00');
 const KKN_END   = new Date('2026-08-25T23:59:59+07:00');
-const OPEN_H    = 0;  // 00:xx WIB
-const CLOSE_H   = 24; // 24:xx WIB
+const OPEN_H    = 6;  // 06:xx WIB
+const CLOSE_H   = 7;  // 07:xx WIB
 
 /* ─────────────────────────────────
    Get current time as WIB (Jakarta, UTC+7)
@@ -145,6 +145,17 @@ const Absensi: React.FC = () => {
   const [nim, setNim]           = useState('');
   const [status, setStatus]     = useState<Status>('idle');
   const [errMsg, setErrMsg]     = useState('');
+  const [leaderboard, setLeaderboard] = useState<{nama: string; score: number}[]>([]);
+
+  /* fetch leaderboard on mount */
+  useEffect(() => {
+    fetch('/api/leaderboard')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setLeaderboard(data);
+      })
+      .catch(err => console.error('Gagal fetch leaderboard', err));
+  }, []);
 
   /* tick every second */
   useEffect(() => {
@@ -188,7 +199,7 @@ const Absensi: React.FC = () => {
     if (!nama || !nim) return;
 
     // ⚡ Period check DISABLED during testing — enable on go-live by uncommenting:
-    // if (!inKKN) { setStatus('outside-kkn'); playSound('locked'); return; }
+    if (!inKKN) { setStatus('outside-kkn'); playSound('locked'); return; }
 
     if (!open)            { setStatus('closed'); playSound('locked'); return; }
     if (alreadySubmitted()) { setStatus('duplicate'); playSound('locked'); return; }
@@ -298,7 +309,7 @@ const Absensi: React.FC = () => {
                   : <>🔴 <strong>ABSENSI TUTUP</strong><br />Buka dalam {fmtCountdown(minsUntilOpen(wib))}</>
                 }
               </div>
-              <div className="status-card__window">Jam absensi: [TEST MODE] 24 Jam</div>
+              <div className="status-card__window">Jam absensi: 06:00 – 07:00 WIB</div>
             </motion.div>
 
             {/* KKN day info */}
@@ -336,23 +347,22 @@ const Absensi: React.FC = () => {
                 <h3 className="leaderboard-title">Top 3 Si Paling Pagi</h3>
               </div>
               <ul className="leaderboard-list">
-                <li className="leaderboard-item">
-                  <span className="leaderboard-rank" style={{ background: '#FFD700', color: '#000' }}>1</span>
-                  <span className="leaderboard-name">Ahmad Fauzi</span>
-                  <span className="leaderboard-time">07:00</span>
-                </li>
-                <li className="leaderboard-item">
-                  <span className="leaderboard-rank" style={{ background: '#C0C0C0', color: '#000' }}>2</span>
-                  <span className="leaderboard-name">Mutiara</span>
-                  <span className="leaderboard-time">07:01</span>
-                </li>
-                <li className="leaderboard-item">
-                  <span className="leaderboard-rank" style={{ background: '#CD7F32', color: '#fff' }}>3</span>
-                  <span className="leaderboard-name">Raflhy</span>
-                  <span className="leaderboard-time">07:02</span>
-                </li>
+                {leaderboard.length === 0 ? (
+                  <p className="leaderboard-note" style={{ textAlign: 'center', marginTop: '16px' }}>Belum ada data</p>
+                ) : (
+                  leaderboard.map((lb, idx) => (
+                    <li key={idx} className="leaderboard-item">
+                      <span className="leaderboard-rank" style={{ 
+                        background: idx === 0 ? '#FFD700' : idx === 1 ? '#C0C0C0' : '#CD7F32', 
+                        color: idx === 2 ? '#fff' : '#000' 
+                      }}>{idx + 1}</span>
+                      <span className="leaderboard-name">{lb.nama.split(' ')[0]}</span>
+                      <span className="leaderboard-time">{lb.score} Poin</span>
+                    </li>
+                  ))
+                )}
               </ul>
-              <p className="leaderboard-note">*Data ilustrasi sementara</p>
+              <p className="leaderboard-note">*Diperbarui secara real-time dari Google Sheets</p>
             </motion.div>
           </div>
 
@@ -400,8 +410,8 @@ const Absensi: React.FC = () => {
                   <h2 className="result-title">{status === 'outside-kkn' ? 'DI LUAR PERIODE KKN' : 'BELUM WAKTUNYA!'}</h2>
                   <p className="result-sub">
                     {status === 'outside-kkn'
-                      ? 'Absensi hanya tersedia 21 Juli – 25 Agustus 2026.'
-                      : `Absensi dibuka pukul [TEST MODE] 24 Jam. Sekarang ${fmtTime(wib)}.`}
+                      ? 'Absensi hanya tersedia 22 Juli – 25 Agustus 2026.'
+                      : `Absensi dibuka pukul 06:00 – 07:00 WIB. Sekarang ${fmtTime(wib)}.`}
                   </p>
                   <button className="comic-btn comic-btn-primary result-btn" onClick={reset}>
                     <RotateCcw size={16} strokeWidth={3} /> Kembali
@@ -542,7 +552,7 @@ const Absensi: React.FC = () => {
                   </button>
 
                   <p className="form-disclaimer">
-                    <XCircle size={12} strokeWidth={3} /> Absensi hanya bisa dilakukan 1x/hari pukul [TEST MODE] 24 Jam
+                    <XCircle size={12} strokeWidth={3} /> Absensi hanya bisa dilakukan 1x/hari pukul 06:00–07:00 WIB
                   </p>
                 </motion.form>
               )}
@@ -561,9 +571,9 @@ const Absensi: React.FC = () => {
           </div>
           <div className="rules-grid">
             {[
-              { icon: '⏰', title: 'Jam Absensi', desc: 'Hanya bisa absen pukul [TEST MODE] 24 Jam setiap harinya.' },
+              { icon: '⏰', title: 'Jam Absensi', desc: 'Hanya bisa absen pukul 06:00 – 07:00 WIB setiap harinya.' },
               { icon: '1️⃣', title: '1x Per Hari', desc: 'Setiap anggota hanya bisa melakukan 1x absensi per hari.' },
-              { icon: '📅', title: 'Periode KKN', desc: 'Absensi aktif selama 21 Juli – 25 Agustus 2026 (36 hari).' },
+              { icon: '📅', title: 'Periode KKN', desc: 'Absensi aktif selama 22 Juli – 25 Agustus 2026 (35 hari).' },
               { icon: '📊', title: 'Rekap Otomatis', desc: 'Data tersimpan ke Google Sheets, bisa dilihat DPL kapan saja.' },
             ].map((r, i) => (
               <motion.div key={i} className="rule-card comic-card"

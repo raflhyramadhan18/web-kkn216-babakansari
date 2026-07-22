@@ -1,0 +1,99 @@
+.logbook-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding-bottom: var(--space-16);
+}
+
+.logbook-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+
+@media (min-width: 900px) {
+  .logbook-grid {
+    grid-template-columns: 350px 1fr;
+  }
+}
+
+.logbook-form-card {
+  position: sticky;
+  top: 100px;
+}
+
+.logbook-photo-preview {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-2);
+  background: var(--color-bg-alt);
+}
+
+.logbook-feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.logbook-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--color-white);
+}
+
+@media (min-width: 600px) {
+  .logbook-item {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.logbook-item__photo {
+  width: 100%;
+  max-width: 200px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  box-shadow: 2px 2px 0 #000;
+  object-fit: cover;
+  aspect-ratio: 4/3;
+  flex-shrink: 0;
+}
+
+.logbook-item__content {
+  flex: 1;
+}
+
+.logbook-item__title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-2);
+}
+
+.logbook-item__meta {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.logbook-item__desc {
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+.logbook-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  align-items: center;
+  justify-content: space-between;
+}
