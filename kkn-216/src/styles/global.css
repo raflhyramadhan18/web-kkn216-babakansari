@@ -135,6 +135,44 @@ h4, h5, h6 {
   color: var(--color-text);
 }
 
+/* Comic Form Inputs */
+.form-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-base);
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+  color: var(--color-text);
+  letter-spacing: 0.05em;
+}
+
+.comic-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text);
+  background-color: var(--color-white);
+  border: 3px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.05);
+  transition: all var(--transition-fast);
+}
+
+.comic-input:focus {
+  outline: none;
+  background-color: var(--color-bg);
+  box-shadow: 4px 4px 0 var(--color-border);
+  transform: translateY(-2px);
+}
+
+.comic-input::placeholder {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
 /* Section title */
 .section-title {
   font-family: var(--font-display);
