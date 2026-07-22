@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, Download, Camera, CheckCircle, Image as ImageIcon, X } from 'lucide-react';
+import { Upload, Download, Camera, CheckCircle, X } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { members } from '../../data/members';
