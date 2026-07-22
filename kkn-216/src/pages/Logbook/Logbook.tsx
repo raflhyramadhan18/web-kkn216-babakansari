@@ -142,12 +142,13 @@ const Logbook: React.FC = () => {
   };
 
   const downloadPDF = () => {
-    const targetLogs = filterNama ? logs.filter(l => l.nama === filterNama) : logs;
-    if (targetLogs.length === 0) return alert('Tidak ada data untuk diexport');
+    const targetLogs = logs.filter(l => l.nama === userNama);
+    if (targetLogs.length === 0) return alert('Tidak ada data logbook');
 
     const doc = new jsPDF();
+    doc.setFont('helvetica', 'bold');
     doc.setFontSize(16);
-    doc.text(`Logbook Harian KKN 216 - ${filterNama || 'Semua Anggota'}`, 14, 15);
+    doc.text(`Logbook Harian KKN 216 - ${userNama}`, 14, 15);
     
     doc.setFontSize(10);
     doc.text(`Dicetak pada: ${new Date().toLocaleString('id-ID')}`, 14, 22);
@@ -168,10 +169,26 @@ const Logbook: React.FC = () => {
       headStyles: { fillColor: [4, 120, 87] } // Primary color
     });
 
-    doc.save(`Logbook_KKN_${filterNama || 'Semua'}.pdf`);
+    doc.save(`Logbook_KKN_${userNama.replace(/\s+/g, '_')}.pdf`);
   };
 
-  const displayedLogs = filterNama ? logs.filter(l => l.nama === filterNama) : logs;
+  const displayedLogs = logs.filter(l => l.nama === userNama);
+
+  const getDirectImageUrl = (url: string) => {
+    if (!url) return '';
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+    return url;
+  };
+
+  const formatDisplayDate = (dateStr: string) => {
+    if (!dateStr) return '';
+    try {
+      const d = new Date(dateStr);
+      if (!isNaN(d.getTime())) return d.toISOString().split('T')[0];
+    } catch(e) {}
+    return dateStr;
+  };
 
   return (
     <div className="logbook-page" style={{ paddingTop: '72px' }}>
@@ -266,18 +283,17 @@ const Logbook: React.FC = () => {
 
           {/* ── RIGHT COL: FEED ── */}
           <div className="logbook-feed-col">
-            <div className="logbook-filters">
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flex: 1, minWidth: '250px' }}>
-                <Search size={20} color="var(--color-text-muted)" />
-                <select className="comic-input" value={filterNama} onChange={e => setFilterNama(e.target.value)} style={{ padding: '8px 12px' }}>
-                  <option value="">Semua Anggota</option>
-                  {members.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
-                </select>
+            {step === 'pin' ? (
+              <div className="comic-card" style={{ textAlign: 'center', padding: '40px', background: '#f5f5f5' }}>
+                <p>Silakan login untuk melihat logbook Anda.</p>
               </div>
-              <button className="comic-btn comic-btn-secondary" onClick={downloadPDF} style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
-                <Download size={16} /> Export PDF
-              </button>
-            </div>
+            ) : (
+              <>
+                <div className="logbook-filters" style={{ justifyContent: 'flex-end', marginBottom: '16px', display: 'flex' }}>
+                  <button className="comic-btn comic-btn-secondary" onClick={downloadPDF} style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
+                    <Download size={16} /> Export PDF
+                  </button>
+                </div>
 
             {loading ? (
               <div style={{ textAlign: 'center', padding: '40px' }}>Memuat data...</div>
@@ -290,12 +306,12 @@ const Logbook: React.FC = () => {
                 {displayedLogs.map((log, idx) => (
                   <motion.div key={idx} className="comic-card logbook-item" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}>
                     {log.fotoUrl && (
-                      <img src={log.fotoUrl} alt="Kegiatan" className="logbook-item__photo" />
+                      <img src={getDirectImageUrl(log.fotoUrl)} alt="Kegiatan" className="logbook-item__photo" />
                     )}
                     <div className="logbook-item__content">
                       <h3 className="logbook-item__title">{log.kegiatan}</h3>
                       <div className="logbook-item__meta">
-                        <span className="comic-badge" style={{ background: 'var(--color-secondary)', fontSize: '0.7rem' }}>{log.tanggal}</span>
+                        <span className="comic-badge" style={{ background: 'var(--color-secondary)', fontSize: '0.7rem' }}>{formatDisplayDate(log.tanggal)}</span>
                         <span>👤 {log.nama}</span>
                       </div>
                       <p className="logbook-item__desc">{log.deskripsi}</p>
@@ -304,8 +320,9 @@ const Logbook: React.FC = () => {
                 ))}
               </div>
             )}
+              </>
+            )}
           </div>
-
         </div>
       </section>
     </div>
