@@ -117,15 +117,22 @@ const Logbook: React.FC = () => {
       });
 
       if (res.ok) {
-        setSubmitSuccess(true);
-        setTimeout(() => {
-          setSubmitSuccess(false);
-          setFormTitle('');
-          setFormDesc('');
-          setFotoBase64('');
-          if (fileInputRef.current) fileInputRef.current.value = '';
-          fetchLogs(); // refresh feed
-        }, 3000);
+        const data = await res.json();
+        if (data.success === false) {
+          alert('Gagal: ' + data.message);
+        } else {
+          setSubmitSuccess(true);
+          setTimeout(() => {
+            setSubmitSuccess(false);
+            setFormTitle('');
+            setFormDesc('');
+            setFotoBase64('');
+            if (fileInputRef.current) fileInputRef.current.value = '';
+            fetchLogs(); // refresh feed
+          }, 3000);
+        }
+      } else {
+        alert('Gagal menghubungi server');
       }
     } catch (e) {
       console.error(e);
