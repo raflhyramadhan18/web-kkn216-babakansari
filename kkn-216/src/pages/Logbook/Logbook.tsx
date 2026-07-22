@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Upload, Download, Camera, CheckCircle, Search, Filter } from 'lucide-react';
+import { Upload, Download, Camera, CheckCircle, Search } from 'lucide-react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { members } from '../../data/members';
