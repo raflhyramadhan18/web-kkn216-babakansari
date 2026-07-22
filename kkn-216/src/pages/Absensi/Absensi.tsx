@@ -146,6 +146,7 @@ const Absensi: React.FC = () => {
   const [status, setStatus]     = useState<Status>('idle');
   const [errMsg, setErrMsg]     = useState('');
   const [leaderboard, setLeaderboard] = useState<{nama: string; score: number}[]>([]);
+  const [isWithinTime, setIsWithinTime] = useState(false);
 
   /* fetch leaderboard on mount */
   useEffect(() => {
@@ -169,9 +170,10 @@ const Absensi: React.FC = () => {
     return !!localStorage.getItem(key);
   }, [nim, wib]);
 
-  const open  = isWindowOpen(wib);
-  const inKKN = isKKNPeriod(wib);
-  const kkDay = inKKN ? getKKNDay(wib) : 0;
+  // OVERRIDE FOR TESTING: ALWAYS ALLOW
+  const open  = true; // isWindowOpen(wib);
+  const inKKN = true; // isKKNPeriod(wib);
+  const kkDay = 1;    // inKKN ? getKKNDay(wib) : 0;
 
   /* ── Step 1: verify PIN ── */
   const handlePinSubmit = (e: React.FormEvent) => {

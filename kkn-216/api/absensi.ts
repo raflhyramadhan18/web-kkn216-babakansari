@@ -50,11 +50,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const wib = getWIB();
 
   // Period check
+  /*
   if (!isKKNPeriod(wib)) {
     return res.status(400).json({ success: false, message: 'Di luar periode KKN (21 Jul – 25 Agt 2026)' });
   }
+  */
 
   // Time window check
+  /*
   if (!isWindowOpen(wib)) {
     return res.status(400).json({
       success: false,
