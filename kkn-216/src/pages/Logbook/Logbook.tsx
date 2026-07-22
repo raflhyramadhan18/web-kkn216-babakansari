@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, Download, Camera, CheckCircle, X } from 'lucide-react';
 import jsPDF from 'jspdf';
@@ -390,7 +391,7 @@ const Logbook: React.FC = () => {
       </section>
 
       <AnimatePresence>
-        {selectedPhoto && (
+        {selectedPhoto && typeof document !== 'undefined' && createPortal(
           <motion.div 
             className="photo-modal-overlay"
             initial={{ opacity: 0 }}
@@ -410,7 +411,8 @@ const Logbook: React.FC = () => {
               </button>
               <img src={selectedPhoto} alt="Detail Kegiatan" className="photo-modal-img" />
             </motion.div>
-          </motion.div>
+          </motion.div>,
+          document.body
         )}
       </AnimatePresence>
     </div>
