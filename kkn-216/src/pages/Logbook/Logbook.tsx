@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Upload, Download, Camera, CheckCircle, Search } from 'lucide-react';
+import { Upload, Download, Camera, CheckCircle } from 'lucide-react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { members } from '../../data/members';
@@ -19,7 +19,6 @@ const Logbook: React.FC = () => {
   // Feed state
   const [logs, setLogs] = useState<LogData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filterNama, setFilterNama] = useState<string>('');
 
   // Form state
   const [step, setStep] = useState<'pin' | 'form'>('pin');
