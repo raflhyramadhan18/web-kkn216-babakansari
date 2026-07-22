@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Upload, Download, Camera, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Upload, Download, Camera, CheckCircle, Image as ImageIcon, X } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { members } from '../../data/members';
@@ -20,6 +20,7 @@ const Logbook: React.FC = () => {
   const [logs, setLogs] = useState<LogData[]>([]);
   const [loading, setLoading] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   // Form state
   const [step, setStep] = useState<'pin' | 'form'>('pin');
@@ -362,9 +363,6 @@ const Logbook: React.FC = () => {
               <div className="logbook-feed">
                 {displayedLogs.map((log, idx) => (
                   <motion.div key={idx} className="comic-card logbook-item" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}>
-                    {log.fotoUrl && (
-                      <img src={getDirectImageUrl(log.fotoUrl)} alt="Kegiatan" className="logbook-item__photo" />
-                    )}
                     <div className="logbook-item__content">
                       <h3 className="logbook-item__title">{log.kegiatan}</h3>
                       <div className="logbook-item__meta">
@@ -372,6 +370,11 @@ const Logbook: React.FC = () => {
                         <span>👤 {log.nama}</span>
                       </div>
                       <p className="logbook-item__desc">{log.deskripsi}</p>
+                      {log.fotoUrl && (
+                        <button className="comic-btn comic-btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem', marginTop: '12px' }} onClick={() => setSelectedPhoto(getDirectImageUrl(log.fotoUrl))}>
+                          <ImageIcon size={16} /> Lihat Foto
+                        </button>
+                      )}
                     </div>
                   </motion.div>
                 ))}
@@ -382,6 +385,31 @@ const Logbook: React.FC = () => {
           </div>
         </div>
       </section>
+
+      <AnimatePresence>
+        {selectedPhoto && (
+          <motion.div 
+            className="photo-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedPhoto(null)}
+          >
+            <motion.div 
+              className="photo-modal-content comic-card"
+              initial={{ scale: 0.8, opacity: 0, y: 50 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0, y: 50 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <button className="photo-modal-close" onClick={() => setSelectedPhoto(null)}>
+                <X size={24} />
+              </button>
+              <img src={selectedPhoto} alt="Detail Kegiatan" className="photo-modal-img" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
