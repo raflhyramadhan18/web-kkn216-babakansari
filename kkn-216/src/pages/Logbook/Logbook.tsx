@@ -245,6 +245,8 @@ const Logbook: React.FC = () => {
     return dateStr;
   };
 
+  const displayedLogs = logs.filter(l => l.nama === userNama);
+
   return (
     <div className="logbook-page" style={{ paddingTop: '72px' }}>
       <section className="page-header" style={{ background: 'var(--color-primary)' }}>
