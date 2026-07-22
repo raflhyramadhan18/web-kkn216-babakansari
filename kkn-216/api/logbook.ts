@@ -7,7 +7,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const gasUrl = process.env.GAS_URL;
+  const gasUrl = process.env.GAS_URL || 'https://script.google.com/macros/s/AKfycbyT7usvE6S-TXxuHV1cCGop-dYrxd10W03Bab57qOWV7IdZuJyv5cIRee5Vm7Z6XEku/exec';
   if (!gasUrl) {
     if (req.method === 'GET') return res.status(200).json([]);
     return res.status(200).json({ success: true, message: 'Logbook (Dev Mode)' });

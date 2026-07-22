@@ -57,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Forward to Google Apps Script (which handles duplicate check & Sheet write)
-  const gasUrl = process.env.GAS_URL;
+  const gasUrl = process.env.GAS_URL || 'https://script.google.com/macros/s/AKfycbyT7usvE6S-TXxuHV1cCGop-dYrxd10W03Bab57qOWV7IdZuJyv5cIRee5Vm7Z6XEku/exec';
   if (!gasUrl) {
     // If GAS_URL not configured, return success so UI works in dev/testing
     console.warn('GAS_URL not set — absensi not written to Sheets');
