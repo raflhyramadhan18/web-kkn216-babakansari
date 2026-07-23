@@ -191,11 +191,11 @@
   transition: transform 0.25s, box-shadow 0.25s;
 }
 
-/* Photo area — 2:3 ratio */
+/* Photo area */
 .member-card__photo-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 50 / 85;
   background: #e8e8e8;
   overflow: hidden;
 }

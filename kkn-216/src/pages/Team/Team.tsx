@@ -10,6 +10,9 @@ const roleColors: Record<string, { bg: string; text: string }> = {
   'Ketua':      { bg: '#2ABF5A', text: '#fff' },
   'Sekretaris': { bg: '#7C3AED', text: '#fff' },
   'Bendahara':  { bg: '#2563EB', text: '#fff' },
+  'Acara':      { bg: '#EAB308', text: '#000' }, // vibrant yellow
+  'PDD':        { bg: '#EC4899', text: '#fff' }, // vibrant pink
+  'Logkom':     { bg: '#06B6D4', text: '#fff' }, // cyan
   'Humas':      { bg: '#EA580C', text: '#fff' },
 };
 const getRoleColor = (role: string) =>
@@ -156,7 +159,6 @@ const Team: React.FC = () => {
                     alt={`Foto ${member.name}`}
                     className="member-spotlight__photo"
                   />
-                  <div className="member-spotlight__crown">👑</div>
                   <div className="member-spotlight__click-hint">🔍 Klik untuk detail</div>
                 </div>
                 <div className="member-spotlight__info">
