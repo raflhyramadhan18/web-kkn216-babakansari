@@ -12,7 +12,7 @@ function isWindowOpen(wib: Date): boolean {
   const h = wib.getUTCHours();
   const m = wib.getUTCMinutes();
   const t = h * 60 + m;
-  return t >= 6 * 60 && t < 7 * 60; // 06:00–07:00 WIB
+  return t >= 6 * 60 && t < 8 * 60; // 06:00–08:00 WIB
 }
 
 function isKKNPeriod(wib: Date): boolean {
@@ -50,18 +50,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const wib = getWIB();
 
   // Period check
-  /*
   if (!isKKNPeriod(wib)) {
     return res.status(400).json({ success: false, message: 'Di luar periode KKN (21 Jul – 25 Agt 2026)' });
   }
-  */
 
   // Time window check
-  /*
   if (!isWindowOpen(wib)) {
     return res.status(400).json({
       success: false,
-      message: `Absensi hanya dibuka pukul 06:00–07:00 WIB. Sekarang ${wib.getUTCHours() + 7}:${String(wib.getUTCMinutes()).padStart(2,'0')} WIB`,
+      message: `Absensi hanya dibuka pukul 06:00–08:00 WIB. Sekarang ${wib.getUTCHours() + 7}:${String(wib.getUTCMinutes()).padStart(2,'0')} WIB`,
     });
   }
 

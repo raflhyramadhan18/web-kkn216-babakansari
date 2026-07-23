@@ -125,7 +125,7 @@ export const members: Member[] = [
   {
     id: 12,
     name: 'Yasmin Meilani',
-    nim: '2022201012',
+    nim: '1234010035',
     pin: '3579',
     role: 'Logkom',
     faculty: 'Fakultas Dakwah dan Komunikasi',

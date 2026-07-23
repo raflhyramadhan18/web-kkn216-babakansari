@@ -10,7 +10,7 @@ import './Absensi.css';
 const KKN_START = new Date('2026-07-22T00:00:00+07:00');
 const KKN_END   = new Date('2026-08-25T23:59:59+07:00');
 const OPEN_H    = 6;  // 06:xx WIB
-const CLOSE_H   = 7;  // 07:xx WIB
+const CLOSE_H   = 8;  // 08:xx WIB
 
 /* ─────────────────────────────────
    Get current time as WIB (Jakarta, UTC+7)
@@ -169,12 +169,9 @@ const Absensi: React.FC = () => {
     return !!localStorage.getItem(key);
   }, [nim, wib]);
 
-  // OVERRIDE FOR TESTING: ALWAYS ALLOW
-  const open  = true; 
-  const inKKN = true; 
-  const kkDay = 1;    
-  // just to satisfy TypeScript unused vars:
-  console.log(isWindowOpen(wib), isKKNPeriod(wib), getKKNDay(wib));
+  const open  = isWindowOpen(wib);
+  const inKKN = isKKNPeriod(wib);
+  const kkDay = inKKN ? getKKNDay(wib) : 0;
 
   /* ── Step 1: verify PIN ── */
   const handlePinSubmit = (e: React.FormEvent) => {
