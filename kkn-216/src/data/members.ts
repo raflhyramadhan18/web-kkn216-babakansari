@@ -20,7 +20,7 @@ export const members: Member[] = [
     role: 'Sekretaris',
     faculty: 'Fakultas Tarbiyah dan Keguruan',
     major: 'Pendidikan Fisika',
-    photo: '/members/2.png',
+    photo: '/members/3.png',
     instagram: 'sitinurhaliza_',
   },
   {
@@ -31,7 +31,7 @@ export const members: Member[] = [
     role: 'Bendahara',
     faculty: 'Fakultas Dakwah dan Komunikasi',
     major: 'Komunikasi dan Penyiaran Islam',
-    photo: '/members/3.png',
+    photo: '/members/2.png',
     instagram: 'rizkypratamaaa',
   },
   {
@@ -42,7 +42,7 @@ export const members: Member[] = [
     role: 'Acara',
     faculty: 'Fakultas Tarbiyah dan Keguruan',
     major: 'Pendidikan Bahasa Arab',
-    photo: '/members/4.png',
+    photo: '/members/5.png',
     instagram: 'dewirahmawati__',
   },
   {
@@ -53,7 +53,7 @@ export const members: Member[] = [
     role: 'Acara',
     faculty: 'Fakultas Ekonomi dan Bisnis Islam',
     major: 'Akutansi Syariah',
-    photo: '/members/5.png',
+    photo: '/members/4.png',
     instagram: 'budisantoso_',
   },
   {
@@ -86,7 +86,7 @@ export const members: Member[] = [
     role: 'PDD',
     faculty: 'Fakultas Adab dan Humaniora',
     major: 'Ekonomi Syariah',
-    photo: '/members/8.png',
+    photo: '/members/9.png',
     instagram: 'anisafitrianiii',
   },
   {
@@ -97,7 +97,7 @@ export const members: Member[] = [
     role: 'PDD',
     faculty: 'Fakultas Sains dan Teknologi',
     major: 'Agroteknologi',
-    photo: '/members/9.png',
+    photo: '/members/8.png',
     instagram: 'hendrasetiawan_',
   },
   {
@@ -108,7 +108,7 @@ export const members: Member[] = [
     role: 'Logkom',
     faculty: 'Fakultas Dakwah dan Komunikasi',
     major: 'Ilmu Komunikasi Jurnalistik',
-    photo: '/members/10.png',
+    photo: '/members/13.png',
     instagram: 'rinianggraeni__',
   },
   {
@@ -119,7 +119,7 @@ export const members: Member[] = [
     role: 'Logkom',
     faculty: 'Fakultas Syariah dan Hukum',
     major: 'Hukum Pidana Islam',
-    photo: '/members/11.png',
+    photo: '/members/12.png',
     instagram: 'danifirmansyah_',
   },
   {
@@ -130,7 +130,7 @@ export const members: Member[] = [
     role: 'Logkom',
     faculty: 'Fakultas Dakwah dan Komunikasi',
     major: 'Bimbingan Konseling Islam',
-    photo: '/members/12.png',
+    photo: '/members/14.png',
     instagram: 'lestariwulandari',
   },
   { 
@@ -141,7 +141,7 @@ export const members: Member[] = [
     role: 'Humas',
     faculty: 'Fakultas Ushuluddin',
     major: 'Ilmu Hadist',
-    photo: '/members/13.png',
+    photo: '/members/11.png',
     instagram: 'yusufabdillah_',
   },
   {
@@ -152,7 +152,7 @@ export const members: Member[] = [
     role: 'Humas',
     faculty: 'Fakultas Tarbiyah dan Keguruan',
     major: 'Pendidikan Islam Anak Usia Dini',
-    photo: '/members/14.png',
+    photo: '/members/10.png',
     instagram: 'megasilviana__',
   },
 ];
