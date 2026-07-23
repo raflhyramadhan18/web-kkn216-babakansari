@@ -387,7 +387,7 @@ const Logbook: React.FC = () => {
                         className="comic-btn comic-btn-outline" 
                         style={{ padding: '6px 12px', fontSize: '0.8rem', marginTop: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                       >
-                        <ImageIcon size={16} /> Download Foto Asli
+                        <ImageIcon size={16} /> Download Foto
                       </a>
                     )}
                   </motion.div>
