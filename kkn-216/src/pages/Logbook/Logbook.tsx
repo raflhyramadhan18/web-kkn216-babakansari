@@ -390,48 +390,50 @@ const Logbook: React.FC = () => {
         </div>
       </section>
 
-      <AnimatePresence>
-        {selectedLog && typeof document !== 'undefined' && createPortal(
-          <motion.div 
-            className="photo-modal-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedLog(null)}
-          >
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {selectedLog && (
             <motion.div 
-              className="photo-modal-content comic-card"
-              initial={{ scale: 0.8, opacity: 0, y: 50 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.8, opacity: 0, y: 50 }}
-              onClick={e => e.stopPropagation()}
+              className="photo-modal-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedLog(null)}
             >
-              <button className="photo-modal-close" onClick={() => setSelectedLog(null)}>
-                <X size={20} strokeWidth={3} />
-              </button>
-              
-              <div className="photo-modal-layout">
-                {selectedLog.fotoUrl && (
-                  <div className="photo-modal-img-wrap">
-                    <img src={getDirectImageUrl(selectedLog.fotoUrl)} alt="Detail Kegiatan" className="photo-modal-img-full" />
-                  </div>
-                )}
-                <div className="photo-modal-info">
-                  <h2 className="photo-modal-title">{selectedLog.kegiatan}</h2>
-                  <div className="photo-modal-meta">
-                    <span className="comic-badge" style={{ background: 'var(--color-secondary)' }}>{formatDisplayDate(selectedLog.tanggal)}</span>
-                    <span style={{ fontWeight: 800 }}>👤 {selectedLog.nama}</span>
-                  </div>
-                  <div className="photo-modal-desc-box comic-card">
-                    <p className="photo-modal-desc">{selectedLog.deskripsi}</p>
+              <motion.div 
+                className="photo-modal-content comic-card"
+                initial={{ scale: 0.8, opacity: 0, y: 50 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.8, opacity: 0, y: 50 }}
+                onClick={e => e.stopPropagation()}
+              >
+                <button className="photo-modal-close" onClick={() => setSelectedLog(null)}>
+                  <X size={20} strokeWidth={3} />
+                </button>
+                
+                <div className="photo-modal-layout">
+                  {selectedLog.fotoUrl && (
+                    <div className="photo-modal-img-wrap">
+                      <img src={getDirectImageUrl(selectedLog.fotoUrl)} alt="Detail Kegiatan" className="photo-modal-img-full" />
+                    </div>
+                  )}
+                  <div className="photo-modal-info">
+                    <h2 className="photo-modal-title">{selectedLog.kegiatan}</h2>
+                    <div className="photo-modal-meta">
+                      <span className="comic-badge" style={{ background: 'var(--color-secondary)' }}>{formatDisplayDate(selectedLog.tanggal)}</span>
+                      <span style={{ fontWeight: 800 }}>👤 {selectedLog.nama}</span>
+                    </div>
+                    <div className="photo-modal-desc-box comic-card">
+                      <p className="photo-modal-desc">{selectedLog.deskripsi}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
-          </motion.div>,
-          document.body
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 };
