@@ -82,7 +82,8 @@
 
 .member-spotlight__photo {
   width: 210px;
-  height: 280px; /* 3:4 */
+  aspect-ratio: 50 / 85;
+  height: auto;
   object-fit: cover;
   border: var(--border);
   border-radius: var(--radius-sm);
