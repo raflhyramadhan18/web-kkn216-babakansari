@@ -236,6 +236,15 @@ const Logbook: React.FC = () => {
     return url;
   };
 
+  const getOriginalDriveLink = (url: string) => {
+    if (!url) return '';
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) {
+      return `https://drive.google.com/uc?export=download&id=${match[1]}`;
+    }
+    return url;
+  };
+
   const formatDisplayDate = (dateStr: string) => {
     if (!dateStr) return '';
     try {
@@ -372,13 +381,13 @@ const Logbook: React.FC = () => {
                     </div>
                     {log.fotoUrl && (
                       <a 
-                        href={getDirectImageUrl(log.fotoUrl)} 
+                        href={getOriginalDriveLink(log.fotoUrl)} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="comic-btn comic-btn-outline" 
                         style={{ padding: '6px 12px', fontSize: '0.8rem', marginTop: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                       >
-                        <ImageIcon size={16} /> Download Foto
+                        <ImageIcon size={16} /> Download Foto Asli
                       </a>
                     )}
                   </motion.div>
