@@ -21,7 +21,7 @@ const Logbook: React.FC = () => {
   const [logs, setLogs] = useState<LogData[]>([]);
   const [loading, setLoading] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const [selectedLog, setSelectedLog] = useState<LogData | null>(null);
 
   // Form state
   const [step, setStep] = useState<'pin' | 'form'>('pin');
@@ -373,7 +373,7 @@ const Logbook: React.FC = () => {
                       <p className="logbook-item__desc">{log.deskripsi}</p>
                     </div>
                     {log.fotoUrl && (
-                      <div className="logbook-item__thumb-wrap" onClick={() => setSelectedPhoto(getDirectImageUrl(log.fotoUrl))}>
+                      <div className="logbook-item__thumb-wrap" onClick={() => setSelectedLog(log)}>
                         <img src={getDirectImageUrl(log.fotoUrl)} alt="Thumbnail" className="logbook-item__thumb" />
                         <div className="logbook-item__thumb-overlay">
                           <span>🔍 Show Detail</span>
@@ -391,13 +391,13 @@ const Logbook: React.FC = () => {
       </section>
 
       <AnimatePresence>
-        {selectedPhoto && typeof document !== 'undefined' && createPortal(
+        {selectedLog && typeof document !== 'undefined' && createPortal(
           <motion.div 
             className="photo-modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setSelectedPhoto(null)}
+            onClick={() => setSelectedLog(null)}
           >
             <motion.div 
               className="photo-modal-content comic-card"
@@ -406,10 +406,27 @@ const Logbook: React.FC = () => {
               exit={{ scale: 0.8, opacity: 0, y: 50 }}
               onClick={e => e.stopPropagation()}
             >
-              <button className="photo-modal-close" onClick={() => setSelectedPhoto(null)}>
-                <X size={24} />
+              <button className="photo-modal-close" onClick={() => setSelectedLog(null)}>
+                <X size={20} strokeWidth={3} />
               </button>
-              <img src={selectedPhoto} alt="Detail Kegiatan" className="photo-modal-img" />
+              
+              <div className="photo-modal-layout">
+                {selectedLog.fotoUrl && (
+                  <div className="photo-modal-img-wrap">
+                    <img src={getDirectImageUrl(selectedLog.fotoUrl)} alt="Detail Kegiatan" className="photo-modal-img-full" />
+                  </div>
+                )}
+                <div className="photo-modal-info">
+                  <h2 className="photo-modal-title">{selectedLog.kegiatan}</h2>
+                  <div className="photo-modal-meta">
+                    <span className="comic-badge" style={{ background: 'var(--color-secondary)' }}>{formatDisplayDate(selectedLog.tanggal)}</span>
+                    <span style={{ fontWeight: 800 }}>👤 {selectedLog.nama}</span>
+                  </div>
+                  <div className="photo-modal-desc-box comic-card">
+                    <p className="photo-modal-desc">{selectedLog.deskripsi}</p>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </motion.div>,
           document.body
