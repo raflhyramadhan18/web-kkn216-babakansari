@@ -268,7 +268,7 @@ const Team: React.FC = () => {
             transition={{ duration: 0.5 }}
           >
             <img
-              src="/group-photo-placeholder.png"
+              src="/members/15.jpg"
               alt="Foto Bersama KKN 216 Babakansari"
               className="group-photo-img"
             />
@@ -276,7 +276,7 @@ const Team: React.FC = () => {
               <span>📸</span>
               <div>
                 <strong>Foto Bersama KKN 216</strong>
-                <p>Ganti file <code>/group-photo-placeholder.png</code> dengan foto asli</p>
+                <p>Kenangan Indah Bersama di Desa Babakansari</p>
               </div>
             </div>
           </motion.div>
